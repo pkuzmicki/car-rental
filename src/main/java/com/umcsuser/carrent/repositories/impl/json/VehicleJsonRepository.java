@@ -6,6 +6,7 @@ import com.umcsuser.carrent.repositories.VehicleRepository;
 import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Getter
@@ -20,8 +21,8 @@ public class VehicleJsonRepository implements VehicleRepository {
     }
 
     @Override
-    public void addVehicle(String id, String category, String brand, String model, int year, String plate, int price, Map<String, Object> atributes) {
-        Vehicle vehicle = new Vehicle(id, category, brand, model, year, plate, price, atributes);
+    public void addVehicle(String id, String category, String brand, String model, int year, String plate, BigDecimal price, Map<String, Object> attributes) {
+        Vehicle vehicle = new Vehicle(id, category, brand, model, year, plate, price, attributes);
         vehicles.add(vehicle);
     }
 

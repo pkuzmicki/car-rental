@@ -1,5 +1,6 @@
 package com.umcsuser.carrent.repositories.impl.jdbc;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
 import com.google.gson.Gson;
@@ -12,6 +13,16 @@ import com.umcsuser.carrent.repositories.VehicleRepository;
 public class VehicleJdbcRepository implements VehicleRepository {
 
     private final Gson gson = new Gson();
+
+    @Override
+    public void addVehicle(String id, String category, String brand, String model, int year, String plate, BigDecimal price, Map<String, Object> atributes) {
+
+    }
+
+    @Override
+    public void removeVehicle(String id) {
+
+    }
 
     @Override
     public List<Vehicle> findAll() {
@@ -32,7 +43,7 @@ public class VehicleJdbcRepository implements VehicleRepository {
                         .model(rs.getString("model"))
                         .year(rs.getInt("year"))
                         .plate(rs.getString("plate"))
-                        .price(rs.getDouble("price"))
+                        .price(rs.getBigDecimal("price"))
                         .attributes(attributes != null ? attributes : new HashMap<>())
                         .build();
                 list.add(vehicle);
@@ -62,7 +73,7 @@ public class VehicleJdbcRepository implements VehicleRepository {
                             .model(rs.getString("model"))
                             .year(rs.getInt("year"))
                             .plate(rs.getString("plate"))
-                            .price(rs.getDouble("price"))
+                            .price(rs.getBigDecimal("price"))
                             .attributes(attributes != null ? attributes : new HashMap<>())
                             .build();
                     return Optional.of(vehicle);
@@ -93,7 +104,7 @@ public class VehicleJdbcRepository implements VehicleRepository {
             stmt.setString(4, vehicle.getModel());
             stmt.setInt(5, vehicle.getYear());
             stmt.setString(6, vehicle.getPlate());
-            stmt.setDouble(7, vehicle.getPrice());
+            stmt.setBigDecimal(7, vehicle.getPrice());
             stmt.setString(8, gson.toJson(vehicle.getAttributes()));
 
             stmt.executeUpdate();

@@ -16,7 +16,7 @@ public class JdbcConnectionManager {
     }
 
     private JdbcConnectionManager() {
-        url = System.getenv("jdbc:postgresql://ep-nameless-violet-a24m3osv-pooler.eu-central-1.aws.neon.tech/neondb?user=neondb_owner&password=npg_MUu36IfVqJSK&sslmode=require");
+        url = "jdbc:postgresql://ep-nameless-violet-a24m3osv-pooler.eu-central-1.aws.neon.tech/neondb?user=neondb_owner&password=npg_MUu36IfVqJSK&sslmode=require";
         //url = System.getenv("DB_URL");
         if (url == null) {
             throw new RuntimeException("DB_URL not set!");
@@ -29,4 +29,5 @@ public class JdbcConnectionManager {
             throw new RuntimeException("Connection Failed!", e);
         }
     }
+
 }
