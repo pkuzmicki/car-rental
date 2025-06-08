@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface VehicleRepository extends JpaRepository {
+public interface VehicleRepository extends JpaRepository<Vehicle, String> {
     List<Vehicle> findByIsActiveTrue();
 
     Optional<Vehicle> findByIdAndIsActiveTrue(String id);

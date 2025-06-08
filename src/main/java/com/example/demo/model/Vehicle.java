@@ -1,13 +1,11 @@
 package com.example.demo.model;
 
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
@@ -45,7 +43,7 @@ public class Vehicle {
     @Column(nullable = false)
     private BigDecimal price;
 
-    //@Type(JsonBinaryType.class)
+    @Type(JsonBinaryType.class)
     @Column(columnDefinition = "jsonb")
     @Builder.Default
     private Map<String, Object> attributes = Map.of();

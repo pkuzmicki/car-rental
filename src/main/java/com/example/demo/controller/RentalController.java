@@ -27,7 +27,9 @@ public class RentalController {
 
         try {
             Rental rental = rentalService.rent(rentalRequest.vehicleId, rentalRequest.userId);
-            return ResponseEntity.status(HttpStatus.CREATED).body()
+            return ResponseEntity.status(HttpStatus.CREATED).body(rental);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

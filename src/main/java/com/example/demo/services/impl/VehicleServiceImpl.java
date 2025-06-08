@@ -4,11 +4,16 @@ import com.example.demo.model.Vehicle;
 import com.example.demo.repository.RentalRepository;
 import com.example.demo.repository.VehicleRepository;
 import com.example.demo.services.VehicleService;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+@Service
 public class VehicleServiceImpl implements VehicleService {
     private final VehicleRepository vehicleRepository;
     private final RentalRepository rentalRepository;
@@ -34,28 +39,47 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleRepository.findById(id);
     }
 
+//    @Override
+//    public Vehicle save(Vehicle vehicle) {
+//        return (Vehicle) vehicleRepository.save(vehicle);
+//    }
+
     @Override
     public Vehicle save(Vehicle vehicle) {
-        return (Vehicle) vehicleRepository.save(vehicle);
+        if (vehicle.getId() == null || vehicle.getId().isBlank()) {
+            vehicle.setId(UUID.randomUUID().toString());
+            vehicle.setActive(true);
+        }
+        return vehicleRepository.save(vehicle);
     }
 
     @Override
     public List<Vehicle> findAvailableVehicles() {
-        return List.of();
+        Set<String> rentedVehicleIds = rentalRepository.findAll().stream()
+                .map(rental -> rental.getVehicle().getId())
+                .collect(Collectors.toSet());
+        return vehicleRepository.findByIsActiveTrueAndIdNotIn(rentedVehicleIds);
     }
 
     @Override
     public List<Vehicle> findRentedVehicles() {
-        return List.of();
+        return rentalRepository.findAll().stream()
+                .map(rental -> rental.getVehicle())
+                .filter(Vehicle::isActive)
+                .collect(Collectors.toList());
     }
 
     @Override
     public boolean isAvailable(String vehicleId) {
-        return false;
+        Optional<Vehicle> vehicle = vehicleRepository.findByIdAndIsActiveTrue(vehicleId);
+        if (vehicle.isEmpty()) return false;
+
+        return rentalRepository.findAll().stream()
+                .noneMatch(rental -> rental.getVehicle().getId().equals(vehicleId));
     }
 
     @Override
     public void deleteById(String id) {
-
+        vehicleRepository.deleteById(id);
     }
 }

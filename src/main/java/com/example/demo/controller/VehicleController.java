@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -37,6 +38,15 @@ public class VehicleController {
         }
         return null;
     }
+
+    public void getAllVehicles() {
+        List<Vehicle> vehicles = vehicleService.findAll();
+        System.out.println("Lista wszystkich pojazdów:");
+        for (Vehicle v : vehicles) {
+            System.out.println("ID: " + v.getId() + ", Marka: " + v.getBrand() + ", Model: " + v.getModel() + ", Active: " + v.isActive());
+        }
+    }
+
 
 //    public Vehicle save(Vehicle vehicle) {
 //        if (vehicle.getId() == null || vehicle.getId().isBlank()) {
