@@ -4,10 +4,11 @@ import com.example.demo.model.Vehicle;
 import com.example.demo.services.VehicleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/api/vehicles")
@@ -29,30 +30,32 @@ public class VehicleController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Vehicle> addVehicle(@RequestBody Vehicle vehicle) {
         try {
             Vehicle savedVehicle = vehicleService.save(vehicle);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedVehicle);
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return null;
     }
 
-    public void getAllVehicles() {
-        List<Vehicle> vehicles = vehicleService.findAll();
-        System.out.println("Lista wszystkich pojazdów:");
-        for (Vehicle v : vehicles) {
-            System.out.println("ID: " + v.getId() + ", Marka: " + v.getBrand() + ", Model: " + v.getModel() + ", Active: " + v.isActive());
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<Void> softDeleteVehicle(@PathVariable String id) {
+        boolean deleted = vehicleService.softDeleteById(id);
+        if (deleted) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
-
-//    public Vehicle save(Vehicle vehicle) {
-//        if (vehicle.getId() == null || vehicle.getId().isBlank()) {
-//            vehicle.setId(UUID.randomUUID().toString());
-//            vehicle.setActive(true);
-//        }
-//        Vehicle savedVehicle = vehicleRepository.save(vehicle);
-//    }
+    @GetMapping("/all")
+    public ResponseEntity<List<Vehicle>> getAllVehicles() {
+        List<Vehicle> vehicles = vehicleService.findAll();
+        return ResponseEntity.ok(vehicles);
+    }
 }

@@ -39,11 +39,6 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleRepository.findById(id);
     }
 
-//    @Override
-//    public Vehicle save(Vehicle vehicle) {
-//        return (Vehicle) vehicleRepository.save(vehicle);
-//    }
-
     @Override
     public Vehicle save(Vehicle vehicle) {
         if (vehicle.getId() == null || vehicle.getId().isBlank()) {
@@ -74,12 +69,29 @@ public class VehicleServiceImpl implements VehicleService {
         Optional<Vehicle> vehicle = vehicleRepository.findByIdAndIsActiveTrue(vehicleId);
         if (vehicle.isEmpty()) return false;
 
+//        return rentalRepository.findAll().stream()
+//                .noneMatch(rental -> rental.getVehicle().getId().equals(vehicleId));
         return rentalRepository.findAll().stream()
-                .noneMatch(rental -> rental.getVehicle().getId().equals(vehicleId));
+                .noneMatch(rental ->
+                        rental.getVehicle().getId().equals(vehicleId) &&
+                                rental.getReturnDate() == null);
     }
 
     @Override
     public void deleteById(String id) {
         vehicleRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean softDeleteById(String id) {
+        //System.out.println("aafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaag");
+        Optional<Vehicle> vehicleOpt = vehicleRepository.findById(id);
+        if (vehicleOpt.isPresent()) {
+            Vehicle vehicle = vehicleOpt.get();
+            vehicle.setActive(false);
+            vehicleRepository.save(vehicle);
+            return true;
+        }
+        return false;
     }
 }

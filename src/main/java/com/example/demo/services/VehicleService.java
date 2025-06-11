@@ -22,4 +22,6 @@ public interface VehicleService {
 
     //"it should be soft delete"
     void deleteById(String id);
+
+    boolean softDeleteById(String id);
 }
