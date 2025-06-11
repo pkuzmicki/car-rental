@@ -1,0 +1,144 @@
+//	@Bean
+//	public CommandLineRunner demo(VehicleController vehicleController, RentalController rentalController, AuthController authController) {
+//		return args -> {
+//			Scanner scanner = new Scanner(System.in);
+//			String token = null;
+//
+//			while (true) {
+//				if (token == null) {
+//					System.out.println("=== LOGOWANIE ===");
+//					System.out.print("Login: ");
+//					String login = scanner.nextLine();
+//					System.out.print("Hasło: ");
+//					String password = scanner.nextLine();
+//
+//					LoginRequest loginRequest = new LoginRequest(login, password);
+//					ResponseEntity<LoginResponse> response = authController.login(loginRequest);
+//
+//					if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+//						token = response.getBody().getToken();
+//						System.out.println("Zalogowano pomyślnie!");
+//					} else {
+//						System.out.println("Błąd logowania. Spróbuj ponownie.");
+//						continue;
+//					}
+//				}
+//
+//
+//				System.out.println("=== MENU ===");
+//				System.out.println("0. Wyjdź");
+//				System.out.println("1. Pokaż wszystkie pojazdy");
+//				System.out.println("2. Dodaj pojazd");
+//				System.out.println("3. Usuń pojazd");
+//				System.out.println("4. Wypożycz pojazd");
+//				System.out.println("5. Oddaj pojazd");
+//				System.out.print("Wybierz opcję: ");
+//				String choice = scanner.nextLine();
+//
+//				switch (choice) {
+//					case "0":
+//						token = null;
+//						System.out.println("Wylogowano pomyślnie.");
+//						break;
+//					case "1":
+//						vehicleController.printAllVehicles();
+//						break;
+//					case "2":
+//						System.out.print("Podaj kategorię pojazdu: ");
+//						String category = scanner.nextLine();
+//
+//						System.out.print("Podaj markę pojazdu: ");
+//						String brand = scanner.nextLine();
+//
+//						System.out.print("Podaj model pojazdu: ");
+//						String model = scanner.nextLine();
+//
+//						System.out.print("Podaj rok produkcji: ");
+//						int year = Integer.parseInt(scanner.nextLine());
+//
+//						System.out.print("Podaj numer rejestracyjny: ");
+//						String plate = scanner.nextLine();
+//
+//						System.out.print("Podaj cenę za dzień: ");
+//						BigDecimal price = new BigDecimal(scanner.nextLine());
+//
+//						System.out.print("Czy chcesz dodać dodatkowe atrybuty (tak/nie)? ");
+//						String addAttrs = scanner.nextLine();
+//
+//						Map<String, Object> attributes = new HashMap<>();
+//						while (addAttrs.equalsIgnoreCase("tak")) {
+//							System.out.print("Podaj nazwę atrybutu: ");
+//							String key = scanner.nextLine();
+//							System.out.print("Podaj wartość atrybutu: ");
+//							String value = scanner.nextLine();
+//							attributes.put(key, value);
+//
+//							System.out.print("Dodać kolejny atrybut? (tak/nie): ");
+//							addAttrs = scanner.nextLine();
+//						}
+//
+//						Vehicle newVehicle = Vehicle.builder()
+//								.category(category)
+//								.brand(brand)
+//								.model(model)
+//								.year(year)
+//								.plate(plate)
+//								.price(price)
+//								.isActive(true)
+//								.attributes(attributes)
+//								.build();
+//
+//						ResponseEntity<Vehicle> response = vehicleController.addVehicle(newVehicle);
+//						if (response != null && response.getStatusCode().is2xxSuccessful()) {
+//							System.out.println("Pojazd został dodany.");
+//						} else {
+//							System.out.println("Błąd podczas dodawania pojazdu.");
+//						}
+//						break;
+//					case "3":
+//						System.out.print("Podaj ID pojazdu do usunięcia: ");
+//						String deleteId = scanner.nextLine();
+//						ResponseEntity<Void> deleteResponse = vehicleController.softDeleteVehicle(deleteId);
+//						if (deleteResponse.getStatusCode().is2xxSuccessful()) {
+//							System.out.println("Pojazd został oznaczony jako nieaktywny.");
+//						} else {
+//							System.out.println("Nie znaleziono pojazdu o podanym ID.");
+//						}
+//						break;
+//					case "4":
+//						System.out.print("Podaj ID pojazdu do wypożyczenia: ");
+//						String vehicleIdRent = scanner.nextLine();
+//
+//						RentalRequest rentRequest = new RentalRequest();
+//						rentRequest.vehicleId = vehicleIdRent;
+//
+//						ResponseEntity<Rental> rentResponse = rentalController.rentVehicle(rentRequest, );
+//						if (rentResponse.getStatusCode() == HttpStatus.CREATED) {
+//							System.out.println("Pojazd został wypożyczony pomyślnie.");
+//						} else {
+//							System.out.println("Nie udało się wypożyczyć pojazdu.");
+//						}
+//						break;
+//					case "5":
+//						System.out.print("Podaj ID pojazdu do zwrotu: ");
+//						String vehicleIdReturn = scanner.nextLine();
+//
+//						RentalRequest returnRequest = new RentalRequest();
+//						returnRequest.vehicleId = vehicleIdReturn;
+//						//returnRequest.userId = currentUser.getId();
+//
+////						ResponseEntity<Void> returnResponse = rentalController.returnVehicle(returnRequest);
+////						if (returnResponse.getStatusCode() == HttpStatus.OK) {
+////							System.out.println("Pojazd został zwrócony pomyślnie.");
+////						} else if (returnResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
+////							System.out.println("Nie znaleziono pojazdu do zwrócenia.");
+////						} else {
+////							System.out.println("Wystąpił błąd przy zwracaniu pojazdu.");
+////						}
+//						break;
+//					default:
+//						System.out.println("Nieznana opcja, spróbuj ponownie.");
+//				}
+//			}
+//		};
+//	}

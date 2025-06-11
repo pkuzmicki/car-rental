@@ -84,7 +84,6 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public boolean softDeleteById(String id) {
-        //System.out.println("aafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaagaafafafaag");
         Optional<Vehicle> vehicleOpt = vehicleRepository.findById(id);
         if (vehicleOpt.isPresent()) {
             Vehicle vehicle = vehicleOpt.get();
